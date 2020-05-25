@@ -130,14 +130,14 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             //Toast.makeText(this, "TEST", Toast.LENGTH_SHORT).show();
             if (hashMap != null) {
                 for (String key : hashMap.keySet()) {
-                    asBarcode.stopScan();
-//                    Uri uri = Uri.parse(Util.BaseURL + barcodekey);
-//                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
-//                    startActivity(i);
+                    //asBarcode.stopScan();
+                    Uri uri = Uri.parse(Util.BaseURL + key);
+                    Intent i = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(i);
 
-                    this.barcodekey = key;
-                    task = new TaskHttpGet(this);
-                    task.execute(key);
+//                    this.barcodekey = key;
+//                    task = new TaskHttpGet(this);
+//                    task.execute(key);
 
                     break;
                     //return false;
