@@ -191,7 +191,7 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             } else {
                 asBarcode.reloadCamera(this);
             }
-            asBarcode.setTimeout(0);
+            asBarcode.setTimeout(60);
             asBarcode.startScan();
 //
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
