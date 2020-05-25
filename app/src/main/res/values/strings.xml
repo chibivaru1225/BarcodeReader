@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ZOA バーコードリーダー</string>
+    <string name="btnScan_Label">カメラ起動</string>
+    <string name="btnHistory_Label">履歴</string>
+    <string name="app_result_data">ZOA_Result</string>
+    <string name="btnItemCode">あいてむ</string>
+</resources>
