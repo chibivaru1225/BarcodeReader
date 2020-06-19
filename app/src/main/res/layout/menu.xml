@@ -25,6 +25,22 @@
             tools:layout_constraintVertical_weight="1" />
 
         <Button
+            android:id="@+id/btnItemNoSearch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="btnNo_OnClick"
+            android:text="@string/btnItemNoSearch" />
+
+        <Button
+            android:id="@+id/btnItemCodeSearch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:onClick="btnCode_OnClick"
+            android:text="@string/btnItemCodeSearch" />
+
+        <Button
             android:id="@+id/btnHistory"
             android:layout_width="match_parent"
             android:layout_height="0dp"

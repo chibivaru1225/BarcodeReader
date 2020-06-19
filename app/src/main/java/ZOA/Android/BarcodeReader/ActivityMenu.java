@@ -20,7 +20,17 @@ public class ActivityMenu extends AppCompatActivity {
         startActivity(new Intent(getApplication(), ActivityReaderMain.class));
     }
 
-    public void btnHistory_OnClick(View v){
+    public void btnCode_OnClick(View v) {
+//        Intent i = new Intent(getApplication(), ReaderMain.class);
+        startActivity(new Intent(getApplication(), ActivityItemCodeSearch.class));
+    }
+
+    public void btnNo_OnClick(View v) {
+//        Intent i = new Intent(getApplication(), ReaderMain.class);
+        startActivity(new Intent(getApplication(), ActivityItemNoSearch.class));
+    }
+
+    public void btnHistory_OnClick(View v) {
         startActivity(new Intent(getApplication(), ActivityHistory.class));
     }
 }

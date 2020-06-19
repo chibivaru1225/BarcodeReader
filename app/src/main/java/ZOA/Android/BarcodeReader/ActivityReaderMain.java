@@ -28,7 +28,6 @@ import com.asreader.asbarcode.CertifiedSDKInterface;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import static ZOA.Android.BarcodeReader.R.*;
@@ -52,36 +51,28 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(layout.readermain);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(layout.readermain);
+            setTitle("JANコードスキャン");
 
-        asBarcode = AsBarcode.getInstance();
+            asBarcode = AsBarcode.getInstance();
 
-        mAsBarcodeScanView = asBarcode.getScanFragment();
-        mAsPointerManager = AsPointerManager.getInstance();
-        open = false;
-        createview = false;
+            mAsBarcodeScanView = asBarcode.getScanFragment();
+            mAsPointerManager = AsPointerManager.getInstance();
+            open = false;
+            createview = false;
 
-        pre = getSharedPreferences(getString(R.string.app_result_data), MODE_PRIVATE);
-        edi = pre.edit();
-        sdf = new SimpleDateFormat("yyy/MM/dd HH:mm:ss");
+            pre = getSharedPreferences(getString(R.string.app_result_data), MODE_PRIVATE);
+            edi = pre.edit();
+            sdf = new SimpleDateFormat("yyy/MM/dd HH:mm:ss");
 
-        //task = new TaskHttpGet(this);
-        barcodekey = "";
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_PERMISSION);
-//            return;
-//        }
-//        mScanButton = findViewById(R.id.button);
-//        mScanButton.setOnTouchListener((view, motionEvent) -> {
-//
-//            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//
-//                asBarcode.startScan();
-//            }
-//
-//            return false;
-//        });
+            //task = new TaskHttpGet(this);
+            barcodekey = "";
+            //throw new Exception("てすと");
+        } catch (Exception e) {
+            OpenGMail("onCreate", e.getMessage());
+        }
     }
 
     @Override
@@ -131,7 +122,7 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             if (hashMap != null) {
                 for (String key : hashMap.keySet()) {
                     //asBarcode.stopScan();
-                    Uri uri = Uri.parse(Util.BaseURL + key);
+                    Uri uri = Uri.parse(Util.BarcodeURL + key);
                     Intent i = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(i);
 
@@ -145,6 +136,7 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             }
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            OpenGMail("continueScanWhenReceivedScanData", e.getMessage());
             finish();
         }
 //        return null;
@@ -169,18 +161,22 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
 
         setInitConfig();
 
-        if (createview == false) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
-                return;
+        try {
+            if (createview == false) {
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
+                    return;
+                }
+                android.app.FragmentManager manager = this.getFragmentManager();
+
+                android.app.FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(id.frameLayout, mAsBarcodeScanView, "fragment");
+                transaction.commit();
+
+                createview = true;
             }
-            android.app.FragmentManager manager = this.getFragmentManager();
-
-            android.app.FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(id.frameLayout, mAsBarcodeScanView, "fragment");
-            transaction.commit();
-
-            createview = true;
+        } catch (Exception e) {
+            OpenGMail("onResume A", e.getMessage());
         }
 
         try {
@@ -197,45 +193,13 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         } catch (Exception e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            OpenGMail("onResume B", e.getMessage());
         }
     }
 
     public void onClick(View v) {
-//        Toast.makeText(this, "そろそろ寝よう", Toast.LENGTH_SHORT).show();
-
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 2);
-//            return;
-//        }
-//        android.app.FragmentManager manager = this.getFragmentManager();
-//
-//        android.app.FragmentTransaction transaction = manager.beginTransaction();
-//        transaction.replace(R.id.frameLayout, mAsBarcodeScanView, "fragment");
-//        transaction.commit();
-
-//        AsBarcode.CurrentCameraType currentCameraType = asBarcode.getCurrentCameraType(this);
-//        if (currentCameraType != AsBarcode.CurrentCameraType.CameraType_BackFacing) {
-//            new AlertDialog.Builder(this)
-//                    .setMessage(R.string.axa0100000_no_camera)
-//                    .setPositiveButton(getResources().getString(R.string.common_msg_btn01), (dialog, which) -> {
-//                        // OKボタン押下時の処理
-//                        finish();
-//                    })
-//                    // キャンセルイベント
-//                    .setOnCancelListener(dialog -> {
-//                        // キャンセルの処理W
-//                        finish();
-//                    })
-//                    .show();
-//
-//            return;
-//        }
 
         try {
-//            if (open == false) {
-//                open = true;
-//                asBarcode.openCamera(this);
-//            }
             asBarcode.setTimeout(0);
             asBarcode.startScan();
 
@@ -248,45 +212,48 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
     // 復帰時に取り直し動かせるようにするため共通化
     private void setInitConfig() {
         //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        try {
+            asBarcode.setSymbogogiesArray(null);
 
-        asBarcode.setSymbogogiesArray(null);
+            asBarcode.setDouble1Dcode(false);
+            asBarcode.setCheckComposite(false);
 
-        asBarcode.setDouble1Dcode(false);
-        asBarcode.setCheckComposite(false);
-
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.Code39);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.Code93);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.Code128);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN2);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN5);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN8);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN13);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.ITF);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.ISBN10);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.ISBN13);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.UPCA);
-        asBarcode.addSymbogogies(AsBarcode.Symbogogie.NW7);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.Code39);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.Code93);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.Code128);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN2);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN5);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN8);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.EAN13);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.ITF);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.ISBN10);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.ISBN13);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.UPCA);
+            asBarcode.addSymbogogies(AsBarcode.Symbogogie.NW7);
 
 //        int position = 100;
 //        int height = 100;
-        AsFocusPointer asFocusPointer = new AsFocusPointer();
-        asFocusPointer.setY(400);
+            AsFocusPointer asFocusPointer = new AsFocusPointer();
+            asFocusPointer.setY(400);
 
-        asBarcode.setTargetDistanceType(AsBarcode.TargetDistanceType.TargetDistanceType_Normal);
+            asBarcode.setTargetDistanceType(AsBarcode.TargetDistanceType.TargetDistanceType_Normal);
 
-        asBarcode.setScanningPosition(asFocusPointer);
-        asBarcode.setScanningAreaHeight(100);
+            asBarcode.setScanningPosition(asFocusPointer);
+            asBarcode.setScanningAreaHeight(100);
 
-        asBarcode.setFullScreenScan(false);
+            asBarcode.setFullScreenScan(false);
 
 //        asBarcode.setVerifyCount(2);
 //        asBarcode.setFrequencyLimit((float)(2 * 10));
 
-        //mTimeout = Float.parseFloat(sharedPreferences.getString(AsCameraConstants.pref_key_timeout, AsCameraConstants.default_key_timeout));
+            //mTimeout = Float.parseFloat(sharedPreferences.getString(AsCameraConstants.pref_key_timeout, AsCameraConstants.default_key_timeout));
 //        asBarcode.setTimeout(0);
 //        asBarcode.setAutoExposure(true);
 
-        asBarcode.setReportBNR(true);
+            asBarcode.setReportBNR(true);
+        } catch (Exception e) {
+            OpenGMail("setInitConfig", e.getMessage());
+        }
     }
 
     @Override
@@ -294,7 +261,7 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
         History his = new History(barcodekey);
         History.AddHistory(his);
 
-        Uri uri = Uri.parse(Util.BaseURL + barcodekey);
+        Uri uri = Uri.parse(Util.BarcodeURL + barcodekey);
         Intent i = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(i);
     }
@@ -313,5 +280,23 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
         asBarcode.startScan();
 
         //task
+    }
+
+    public void OpenGMail(String subject, String body) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        String[] strTo = {"zoa.system@gmail.com"};
+
+        intent.putExtra(Intent.EXTRA_EMAIL, strTo);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "エラー発生 " + android.os.Build.MODEL + " : " + subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+
+//        Uri attachments = Uri.parse(image_path);
+//        intent.putExtra(Intent.EXTRA_STREAM, attachments);
+
+        intent.setType("message/rfc822");
+
+        intent.setPackage("com.google.android.gm");
+
+        startActivity(intent);
     }
 }

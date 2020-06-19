@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 public class ActivityHistory extends AppCompatActivity {
 
     private AdapterHistory adapter;
@@ -37,7 +35,7 @@ public class ActivityHistory extends AppCompatActivity {
     }
 
     public void OpenBarcode(String barcode) {
-        Uri uri = Uri.parse(Util.BaseURL + barcode);
+        Uri uri = Uri.parse(Util.BarcodeURL + barcode);
         Intent i = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(i);
     }
