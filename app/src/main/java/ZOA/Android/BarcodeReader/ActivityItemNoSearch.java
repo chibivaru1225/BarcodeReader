@@ -30,7 +30,8 @@ public class ActivityItemNoSearch extends AppCompatActivity {
 
     private void OpenItemNoSearch() {
         EditText et = findViewById(R.id.etValue);
-        Uri uri = Uri.parse(Util.ShohinNoURL_A + et.getText() + Util.ShohinNoURL_B);
+        //Uri uri = Uri.parse(Util.ShohinNoURL_A + et.getText() + Util.ShohinNoURL_B);
+        Uri uri = Uri.parse(Util.ShohinNoURL + et.getText());
         Intent i = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(i);
     }

@@ -63,6 +63,8 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             open = false;
             createview = false;
 
+            getString(string.tel_no);
+
             pre = getSharedPreferences(getString(R.string.app_result_data), MODE_PRIVATE);
             edi = pre.edit();
             sdf = new SimpleDateFormat("yyy/MM/dd HH:mm:ss");

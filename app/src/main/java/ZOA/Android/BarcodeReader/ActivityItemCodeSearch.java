@@ -1,5 +1,7 @@
 package ZOA.Android.BarcodeReader;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
@@ -18,10 +20,19 @@ public class ActivityItemCodeSearch extends AppCompatActivity {
         TextView lbl = findViewById(R.id.lblColumnName);
         lbl.setText("商品コード:");
 
-//        EditText et = findViewById(R.id.etValue);
+        EditText et = findViewById(R.id.etValue);
+        et.setInputType(InputType.TYPE_CLASS_TEXT);
 //        et.setInputType(InputType.TYPE_CLASS_NUMBER);
 //
-//        Button bt = findViewById(R.id.btnSearch);
-//        bt.setOnClickListener((buttonView) -> OpenItemNoSearch());
+        Button bt = findViewById(R.id.btnSearch);
+        bt.setOnClickListener((buttonView) -> OpenItemCodeSearch());
+    }
+
+    private void OpenItemCodeSearch() {
+        EditText et = findViewById(R.id.etValue);
+        //Uri uri = Uri.parse(Util.ShohinCodeURL_A + et.getText() + Util.ShohinCodeURL_B);
+        Uri uri = Uri.parse(Util.ShohinCodeURL + et.getText());
+        Intent i = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(i);
     }
 }
