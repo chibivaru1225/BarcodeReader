@@ -21,10 +21,13 @@
         <activity  android:name=".ActivityHistory"></activity>
         <activity  android:name=".ActivityItemNoSearch"></activity>
         <activity  android:name=".ActivityItemCodeSearch"></activity>
+        <activity  android:name=".ActivityID"></activity>
     </application>
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
     <uses-permission android:name="android.permission.CAMERA"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+
 
 </manifest>

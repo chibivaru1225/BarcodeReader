@@ -7,4 +7,8 @@
     <string name="btnItemCodeSearch">商品コード検索</string>
     <string name="btnItemNoSearch">商品番号検索</string>
     <string name="btnSearch">検索</string>
+    <string name="btnGUID">GUID</string>
+    <string name="btnCopy">コピー</string>
+    <string name="btnIDOpen">ID表示</string>
+    <string name="btnSave">保存</string>
 </resources>

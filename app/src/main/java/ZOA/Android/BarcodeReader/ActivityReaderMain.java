@@ -29,6 +29,7 @@ import com.asreader.asbarcode.CertifiedSDKInterface;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 import static ZOA.Android.BarcodeReader.R.*;
 
@@ -62,8 +63,6 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             mAsPointerManager = AsPointerManager.getInstance();
             open = false;
             createview = false;
-
-            getString(string.tel_no);
 
             pre = getSharedPreferences(getString(R.string.app_result_data), MODE_PRIVATE);
             edi = pre.edit();
@@ -124,7 +123,7 @@ public class ActivityReaderMain extends AppCompatActivity implements AsPointerMa
             if (hashMap != null) {
                 for (String key : hashMap.keySet()) {
                     //asBarcode.stopScan();
-                    Uri uri = Uri.parse(Util.BarcodeURL + key);
+                    Uri uri = Uri.parse(Util.BarcodeURL + key + Util.IDURL + Util.ID + Util.VERURL + Util.Version);
                     Intent i = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(i);
 
